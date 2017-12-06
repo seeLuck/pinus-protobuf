@@ -2,6 +2,8 @@ var protobuf = require('../lib/protobuf');
 var util = require('../lib/util');
 var should = require('should');
 var tc = require('./rootMsgTC');
+var fs = require('fs');
+fs.writeFileSync('rootMSG.json', JSON.stringify(tc));
 
 describe('msgEncoderTest', function(){
 	var protos = protobuf.parse(require('./rootMsg.json'));
