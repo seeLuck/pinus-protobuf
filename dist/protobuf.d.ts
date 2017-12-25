@@ -16,7 +16,7 @@ export declare class Protobuf {
     encodeStr(key: any, msg: any, code: any): string | Buffer;
     decode(key: any, msg: any): any;
     decodeStr(key: any, str: any, code: any): any;
-    parse(json: any): {};
+    static parse(json: any): {};
     setEncoderProtos(protos: any): void;
     setDecoderProtos(protos: any): void;
 }

@@ -50,7 +50,7 @@ class Protobuf {
         return !!buffer ? this.decode(key, buffer) : buffer;
     }
     ;
-    parse(json) {
+    static parse(json) {
         return parser.parse(json);
     }
     ;

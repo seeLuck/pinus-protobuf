@@ -64,7 +64,7 @@ export class Protobuf
         return !!buffer ? this.decode(key, buffer) : buffer;
     };
 
-    parse(json)
+    static parse(json)
     {
         return parser.parse(json);
     };
@@ -76,6 +76,6 @@ export class Protobuf
 
     setDecoderProtos(protos)
     {
-        this. decoder.init(protos);
+        this.decoder.init(protos);
     };
 }
