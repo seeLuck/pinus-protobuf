@@ -1,14 +1,14 @@
 #Pomelo-protobuf
-  Protobuf protocol is a high efficient binary protocol for data encode, this module implement the protobuf protocol, and used in [pomelo](https://github.com/NetEase/pomelo) for data transfer.
-Of course, pomelo-protobuf can also be used independently in other projects.
+  Protobuf protocol is a high efficient binary protocol for data encode, this module implement the protobuf protocol, and used in [pinus](https://github.com/mybios/pinus) for data transfer.
+Of course, pinus-protobuf can also be used independently in other projects.
 ##Architecture
-Unlike the google protobuf, we provide a universal encoder and decoder in pomelo-protobuf. We use protos file as meta data to encode/decode messages, so you do not need to add any code to your project, instead , what you need is to add a protos.json (or two for different encoder and decoder messages) files to define the message need to encode by protobuf.The architecture of pomelo-protobuf is as follow:
+Unlike the google protobuf, we provide a universal encoder and decoder in pinus-protobuf. We use protos file as meta data to encode/decode messages, so you do not need to add any code to your project, instead , what you need is to add a protos.json (or two for different encoder and decoder messages) files to define the message need to encode by protobuf.The architecture of pinus-protobuf is as follow:
 
-![pomelo protobuf](http://pomelo.netease.com/resource/documentImage/protocol/Protobuf_pomelo.png)
+![pinus protobuf](http://pinus.netease.com/resource/documentImage/protocol/Protobuf_pomelo.png)
 
 ##Usage
 ###Define protos
-To use pomelo-protobuf, you need to write a JSON file to define the message format. The syntax of the file is as the same as the .proto file in protobuf, but in JSON format, here is the example protos.json:
+To use pinus-protobuf, you need to write a JSON file to define the message format. The syntax of the file is as the same as the .proto file in protobuf, but in JSON format, here is the example protos.json:
 
   ```
   {
@@ -139,7 +139,7 @@ The protobuf will be a global variable, and you need to get the parsed protos fr
 The others are the same as in server side, except the encoder result will by a ByteArray instead of Buffer.
 
 ###Compatibility
-For the same message and proto, the encode results are **the same** for **pomelo-protobuf** and **google protobuf** .This means you can exchange binary data with google-protobuf.
+For the same message and proto, the encode results are **the same** for **pinus-protobuf** and **google protobuf** .This means you can exchange binary data with google-protobuf.
 
 Some how we has some changes in the proto file, and there are some features we do not support, there are the different:
 

@@ -1,17 +1,17 @@
 {
-  "name": "pomelo-protobuf",
+  "name": "pinus-protobuf",
   "version": "1.0.0",
   "main": "./dist/protobuf",
   "types": "./dist/protobuf.d.ts",
   "dependencies": {
     "@types/node": "^8.5.2"
   },
-  "author": {
-    "name": "XiaogangZhang",
-    "email": "zhang0925@gmail.com"
+  "scripts": {
+    "build": "node_modules/.bin/tsc"
   },
   "devDependencies": {
     "should": ">=0.0.1",
-    "mocha": ">=0.0.1"
+    "mocha": ">=0.0.1",
+    "typescript": "^2.6.2"
   }
 }
