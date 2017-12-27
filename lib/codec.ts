@@ -4,7 +4,7 @@
  * @param  {[integer]} num
  * @return {[array]}
  */
-export function encodeUInt32(num)
+export function encodeUInt32(num : number)
 {
     var n = parseInt(num);
     if (isNaN(n) || n < 0)
