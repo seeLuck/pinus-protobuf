@@ -225,9 +225,9 @@ export class Encoder
         return offset;
     }
 
-    encodeTag(type: constant.TYPES, tag: string)
+    encodeTag(type: keyof typeof constant.TYPES, tag: number)
     {
-        let value: number = constant.TYPES[type];
+        let value = constant.TYPES[type];
 
         if (value === undefined) value = 2;
 
