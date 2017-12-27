@@ -1,14 +1,14 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var Parser = module.exports;
+let Parser = module.exports;
 /**
  * [parse the original protos, give the paresed result can be used by protobuf encode/decode.]
  * @param  {[Object]} protos Original protos, in a js map.
  * @return {[Object]} The presed result, a js object represent all the meta data of the given protos.
  */
 function parse(protos) {
-    var maps = {};
-    for (var key in protos) {
+    let maps = {};
+    for (let key in protos) {
         maps[key] = parseObject(protos[key]);
     }
     return maps;
@@ -21,12 +21,12 @@ exports.parse = parse;
  * @return {[Object]} The parsed result, a js object.
  */
 function parseObject(obj) {
-    var proto = {};
-    var nestProtos = {};
-    var tags = {};
-    for (var name in obj) {
-        var tag = obj[name];
-        var params = name.split(' ');
+    let proto = {};
+    let nestProtos = {};
+    let tags = {};
+    for (let name in obj) {
+        let tag = obj[name];
+        let params = name.split(' ');
         switch (params[0]) {
             case 'message':
                 if (params.length !== 2) {

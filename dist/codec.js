@@ -6,15 +6,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
  * @return {[array]}
  */
 function encodeUInt32(num) {
-    var n = parseInt(num);
+    let n = parseInt(num);
     if (isNaN(n) || n < 0) {
         console.log(n);
         return null;
     }
-    var result = [];
+    let result = [];
     do {
-        var tmp = n % 128;
-        var next = Math.floor(n / 128);
+        let tmp = n % 128;
+        let next = Math.floor(n / 128);
         if (next !== 0) {
             tmp = tmp + 128;
         }
@@ -31,7 +31,7 @@ exports.encodeUInt32 = encodeUInt32;
  * @return {[array]} A byte array represent the integer
  */
 function encodeSInt32(num) {
-    var n = parseInt(num);
+    let n = parseInt(num);
     if (isNaN(n)) {
         return null;
     }
@@ -41,9 +41,9 @@ function encodeSInt32(num) {
 exports.encodeSInt32 = encodeSInt32;
 ;
 function decodeUInt32(bytes) {
-    var n = 0;
-    for (var i = 0; i < bytes.length; i++) {
-        var m = parseInt(bytes[i]);
+    let n = 0;
+    for (let i = 0; i < bytes.length; i++) {
+        let m = parseInt(bytes[i]);
         n = n + ((m & 0x7f) * Math.pow(2, (7 * i)));
         if (m < 128) {
             return n;
@@ -54,8 +54,8 @@ function decodeUInt32(bytes) {
 exports.decodeUInt32 = decodeUInt32;
 ;
 function decodeSInt32(bytes) {
-    var n = decodeUInt32(bytes);
-    var flag = ((n % 2) === 1) ? -1 : 1;
+    let n = decodeUInt32(bytes);
+    let flag = ((n % 2) === 1) ? -1 : 1;
     n = ((n % 2 + n) / 2) * flag;
     return n;
 }

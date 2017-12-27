@@ -1,19 +1,36 @@
 /// <reference types="node" />
+import * as constant from './constant';
 export declare class Encoder {
     protos: any;
     constructor(protos: any);
     init(protos: any): void;
-    encode(route: any, msg: any): Buffer;
+    encode(route: string, msg: {
+        [key: string]: any;
+    }): Buffer;
     /**
      * Check if the msg follow the defination in the protos
      */
-    checkMsg(msg: any, protos: any): boolean;
-    encodeMsg(buffer: any, offset: any, protos: any, msg: any): any;
-    encodeProp(value: any, type: any, offset: any, buffer: any, protos?: any): any;
+    checkMsg(msg: {
+        [key: string]: any;
+    }, protos: {
+        [key: string]: any;
+    }): boolean;
+    encodeMsg(buffer: Buffer, offset: number, protos: {
+        [key: string]: any;
+    }, msg: {
+        [key: string]: any;
+    }): number;
+    encodeProp(value: any, type: string, offset: number, buffer: Buffer, protos?: {
+        [key: string]: any;
+    }): number;
     /**
      * Encode reapeated properties, simple msg and object are decode differented
      */
-    encodeArray(array: any, proto: any, offset: any, buffer: any, protos: any): any;
-    writeBytes(buffer: any, offset: any, bytes: any): any;
-    encodeTag(type: string, tag: any): any[];
+    encodeArray(array: Array<number>, proto: {
+        [key: string]: any;
+    }, offset: number, buffer: Buffer, protos: {
+        [key: string]: any;
+    }): number;
+    writeBytes(buffer: Buffer, offset: number, bytes: Array<number>): number;
+    encodeTag(type: constant.TYPES, tag: string): number[];
 }

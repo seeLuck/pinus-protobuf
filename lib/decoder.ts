@@ -9,17 +9,17 @@ export class Decoder
     protos: any;
 
 
-    constructor(protos)
+    constructor(protos: object)
     {
         this.init(protos);
     };
 
-    init(protos)
+    init(protos: object)
     {
         this.protos = protos || {};
     }
 
-    setProtos(protos)
+    setProtos(protos: object)
     {
         if (!!protos)
         {
@@ -27,9 +27,9 @@ export class Decoder
         }
     };
 
-    decode(route, buf)
+    decode(route: string, buf: Buffer)
     {
-        var protos = this.protos[route];
+        let protos = this.protos[route];
 
         this.buffer = buf;
         this.offset = 0;
@@ -41,14 +41,14 @@ export class Decoder
 
         return null;
     };
-    decodeMsg(msg, protos, length)
+    decodeMsg(msg: {[key:string]: any}, protos: {[key:string]: any}, length: number)
     {
         while (this.offset < length)
         {
-            var head = this.getHead();
-            var type = head.type;
-            var tag = head.tag;
-            var name = protos.__tags[tag];
+            let head = this.getHead();
+            let type = head.type;
+            let tag = head.tag;
+            let name = protos.__tags[tag];
 
             switch (protos[name].option)
             {
@@ -72,7 +72,7 @@ export class Decoder
     /**
      * Test if the given msg is finished
      */
-    isFinish(msg, protos)
+    isFinish(msg: object, protos: {[key:string]: any})
     {
         return (!protos.__tags[this.peekHead().tag]);
     }
@@ -81,7 +81,7 @@ export class Decoder
      */
     getHead()
     {
-        var tag = codec.decodeUInt32(this.getBytes());
+        let tag = codec.decodeUInt32(this.getBytes());
 
         return {
             type: tag & 0x7,
@@ -94,7 +94,7 @@ export class Decoder
      */
     peekHead()
     {
-        var tag = codec.decodeUInt32(this.peekBytes());
+        let tag = codec.decodeUInt32(this.peekBytes());
 
         return {
             type: tag & 0x7,
@@ -102,7 +102,7 @@ export class Decoder
         };
     }
 
-    decodeProp(type, protos ?: any)
+    decodeProp(type: string, protos?: {[key:string]: any})
     {
         switch (type)
         {
@@ -112,26 +112,26 @@ export class Decoder
             case 'sInt32':
                 return codec.decodeSInt32(this.getBytes());
             case 'float':
-                var float = this.buffer.readFloatLE(this.offset);
+                let float = this.buffer.readFloatLE(this.offset);
                 this.offset += 4;
                 return float;
             case 'double':
-                var double = this.buffer.readDoubleLE(this.offset);
+                let double = this.buffer.readDoubleLE(this.offset);
                 this.offset += 8;
                 return double;
             case 'string':
-                var length = codec.decodeUInt32(this.getBytes());
+                let length = codec.decodeUInt32(this.getBytes());
 
-                var str = this.buffer.toString('utf8', this.offset, this.offset + length);
+                let str = this.buffer.toString('utf8', this.offset, this.offset + length);
                 this.offset += length;
 
                 return str;
             default:
-                var message = protos && (protos.__messages[type] || this.protos['message ' + type]);
+                let message = protos && (protos.__messages[type] || this.protos['message ' + type]);
                 if (message)
                 {
-                    var length = codec.decodeUInt32(this.getBytes());
-                    var msg = {};
+                    let length = codec.decodeUInt32(this.getBytes());
+                    let msg = {};
                     this.decodeMsg(msg, message, this.offset + length);
                     return msg;
                 }
@@ -139,13 +139,13 @@ export class Decoder
         }
     }
 
-    decodeArray(array, type, protos)
+    decodeArray(array: Array<object>, type: string, protos: object)
     {
         if (util.isSimpleType(type))
         {
-            var length = codec.decodeUInt32(this.getBytes());
+            let length = codec.decodeUInt32(this.getBytes());
 
-            for (var i = 0; i < length; i++)
+            for (let i = 0; i < length; i++)
             {
                 array.push(this.decodeProp(type));
             }
@@ -155,13 +155,13 @@ export class Decoder
         }
     }
 
-    getBytes(flag ?: boolean)
+    getBytes(flag?: boolean)
     {
-        var bytes = [];
-        var pos = this.offset;
+        let bytes = [];
+        let pos = this.offset;
         flag = flag || false;
 
-        var b : number;
+        let b : number;
         do
         {
             b = this.buffer.readUInt8(pos);

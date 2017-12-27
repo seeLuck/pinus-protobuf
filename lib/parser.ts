@@ -1,14 +1,14 @@
-var Parser = module.exports;
+let Parser = module.exports;
 
 /**
  * [parse the original protos, give the paresed result can be used by protobuf encode/decode.]
  * @param  {[Object]} protos Original protos, in a js map.
  * @return {[Object]} The presed result, a js object represent all the meta data of the given protos.
  */
-export function parse(protos)
+export function parse(protos: {[key:string]: any})
 {
-    var maps = {};
-    for (var key in protos)
+    let maps:{[key:string]: any} = {};
+    for (let key in protos)
     {
         maps[key] = parseObject(protos[key]);
     }
@@ -21,16 +21,16 @@ export function parse(protos)
  * @param  {[Object]} obj The origin proto need to parse.
  * @return {[Object]} The parsed result, a js object.
  */
-function parseObject(obj)
+function parseObject(obj: {[key:string]: any})
 {
-    var proto : any = {};
-    var nestProtos = {};
-    var tags = {};
+    let proto: {[key:string]: any} = {};
+    let nestProtos: {[key:string]: any} = {};
+    let tags: {[key:string]: any} = {};
 
-    for (var name in obj)
+    for (let name in obj)
     {
-        var tag = obj[name];
-        var params = name.split(' ');
+        let tag = obj[name];
+        let params = name.split(' ');
 
         switch (params[0])
         {

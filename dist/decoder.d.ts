@@ -3,15 +3,25 @@ export declare class Decoder {
     buffer: Buffer;
     offset: number;
     protos: any;
-    constructor(protos: any);
-    init(protos: any): void;
-    setProtos(protos: any): void;
-    decode(route: any, buf: any): any;
-    decodeMsg(msg: any, protos: any, length: any): any;
+    constructor(protos: object);
+    init(protos: object): void;
+    setProtos(protos: object): void;
+    decode(route: string, buf: Buffer): {
+        [key: string]: any;
+    };
+    decodeMsg(msg: {
+        [key: string]: any;
+    }, protos: {
+        [key: string]: any;
+    }, length: number): {
+        [key: string]: any;
+    };
     /**
      * Test if the given msg is finished
      */
-    isFinish(msg: any, protos: any): boolean;
+    isFinish(msg: object, protos: {
+        [key: string]: any;
+    }): boolean;
     /**
      * Get property head from protobuf
      */
@@ -26,8 +36,10 @@ export declare class Decoder {
         type: number;
         tag: number;
     };
-    decodeProp(type: any, protos?: any): {};
-    decodeArray(array: any, type: any, protos: any): void;
-    getBytes(flag?: boolean): any[];
-    peekBytes(): any[];
+    decodeProp(type: string, protos?: {
+        [key: string]: any;
+    }): {};
+    decodeArray(array: Array<object>, type: string, protos: object): void;
+    getBytes(flag?: boolean): number[];
+    peekBytes(): number[];
 }

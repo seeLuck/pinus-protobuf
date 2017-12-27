@@ -6,17 +6,17 @@ export class Encoder
 {
     protos: any;
 
-    constructor(protos)
+    constructor(protos: any)
     {
         this.init(protos);
     };
 
-    init(protos)
+    init(protos: any)
     {
         this.protos = protos || {};
     }
 
-    encode(route, msg)
+    encode(route: string, msg: {[key:string]: any})
     {
         if (!route || !msg)
         {
@@ -25,7 +25,7 @@ export class Encoder
         }
 
         //Get protos from protos map use the route as key
-        var protos = this.protos[route];
+        let protos = this.protos[route];
 
         //Check msg
         if (!this.checkMsg(msg, protos))
@@ -35,11 +35,11 @@ export class Encoder
         }
 
         //Set the length of the buffer 2 times bigger to prevent overflow
-        var length = Buffer.byteLength(JSON.stringify(msg)) * 2;
+        let length = Buffer.byteLength(JSON.stringify(msg)) * 2;
 
         //Init buffer and offset
-        var buffer = new Buffer(length);
-        var offset = 0;
+        let buffer = new Buffer(length);
+        let offset = 0;
 
         if (!!protos)
         {
@@ -56,7 +56,7 @@ export class Encoder
     /**
      * Check if the msg follow the defination in the protos
      */
-    checkMsg(msg, protos)
+    checkMsg(msg: {[key:string]: any}, protos: {[key:string]: any})
     {
         if (!protos || !msg)
         {
@@ -64,9 +64,9 @@ export class Encoder
             return false;
         }
 
-        for (var name in protos)
+        for (let name in protos)
         {
-            var proto = protos[name];
+            let proto = protos[name];
 
             //All required element must exist
             switch (proto.option)
@@ -80,7 +80,7 @@ export class Encoder
                 case 'optional':
                     if (typeof (msg[name]) !== 'undefined')
                     {
-                        var message = protos.__messages[proto.type] || this.protos['message ' + proto.type];
+                        let message = protos.__messages[proto.type] || this.protos['message ' + proto.type];
                         if (!!message && !this.checkMsg(msg[name], message))
                         {
                             console.warn('inner proto error! name: %j, proto: %j, msg: %j', name, proto, msg);
@@ -90,10 +90,10 @@ export class Encoder
                     break;
                 case 'repeated':
                     //Check nest message in repeated elements
-                    var message = protos.__messages[proto.type] || this.protos['message ' + proto.type];
+                    let message = protos.__messages[proto.type] || this.protos['message ' + proto.type];
                     if (!!msg[name] && !!message)
                     {
-                        for (var i = 0; i < msg[name].length; i++)
+                        for (let i = 0; i < msg[name].length; i++)
                         {
                             if (!this.checkMsg(msg[name][i], message))
                             {
@@ -108,13 +108,13 @@ export class Encoder
         return true;
     }
 
-    encodeMsg(buffer, offset, protos, msg)
+    encodeMsg(buffer: Buffer, offset: number, protos: {[key:string]: any}, msg: {[key:string]: any})
     {
-        for (var name in msg)
+        for (let name in msg)
         {
             if (!!protos[name])
             {
-                var proto = protos[name];
+                let proto = protos[name];
 
                 switch (proto.option)
                 {
@@ -136,9 +136,9 @@ export class Encoder
         return offset;
     }
 
-    encodeProp(value, type, offset, buffer, protos ?: any)
+    encodeProp(value: any, type: string, offset: number, buffer: Buffer, protos?: {[key:string]: any})
     {
-        var length = 0;
+        let length = 0;
 
         switch (type)
         {
@@ -167,11 +167,11 @@ export class Encoder
                 offset += length;
                 break;
             default:
-                var message = protos.__messages[type] || this.protos['message ' + type];
+                let message:{[key:string]: any} = protos.__messages[type] || this.protos['message ' + type];
                 if (!!message)
                 {
                     //Use a tmp buffer to build an internal msg
-                    var tmpBuffer = new Buffer(Buffer.byteLength(JSON.stringify(value)) * 2);
+                    let tmpBuffer = new Buffer(Buffer.byteLength(JSON.stringify(value)) * 2);
                     length = 0;
 
                     length = this.encodeMsg(tmpBuffer, length, message, value);
@@ -191,9 +191,9 @@ export class Encoder
     /**
      * Encode reapeated properties, simple msg and object are decode differented
      */
-    encodeArray(array, proto, offset, buffer, protos)
+    encodeArray(array: Array<number>, proto: {[key:string]: any}, offset: number, buffer: Buffer, protos: {[key:string]: any})
     {
-        var i = 0;
+        let i = 0;
         if (util.isSimpleType(proto.type))
         {
             offset = this.writeBytes(buffer, offset, this.encodeTag(proto.type, proto.tag));
@@ -214,9 +214,9 @@ export class Encoder
         return offset;
     }
 
-    writeBytes(buffer, offset, bytes)
+    writeBytes(buffer: Buffer, offset: number, bytes: Array<number>)
     {
-        for (var i = 0; i < bytes.length; i++)
+        for (let i = 0; i < bytes.length; i++)
         {
             buffer.writeUInt8(bytes[i], offset);
             offset++;
@@ -225,9 +225,9 @@ export class Encoder
         return offset;
     }
 
-    encodeTag(type : string, tag)
+    encodeTag(type: constant.TYPES, tag: string)
     {
-        var value : number = constant.TYPES[type];
+        let value: number = constant.TYPES[type];
 
         if (value === undefined) value = 2;
 

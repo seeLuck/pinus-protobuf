@@ -7,7 +7,7 @@ export class Protobuf
     encoder: Encoder;
     decoder: Decoder;
 
-    constructor(opts)
+    constructor(opts: {encoderProtos: object, decoderProtos: object})
     {
         //On the serverside, use serverProtos to encode messages send to client
         this.encoder = new Encoder(opts.encoderProtos);
@@ -22,21 +22,21 @@ export class Protobuf
      * @param  {[type]} msg The message body, a js object.
      * @return {[type]} The binary encode result in a Buffer.
      */
-    encode(key, msg)
+    encode(key: string, msg: object)
     {
         return this.encoder.encode(key, msg);
     };
 
-    encode2Bytes(key, msg)
+    encode2Bytes(key: string, msg: object)
     {
-        var buffer = this.encode(key, msg);
+        let buffer = this.encode(key, msg);
         if (!buffer || !buffer.length)
         {
             console.warn('encode msg failed! key : %j, msg : %j', key, msg);
             return null;
         }
-        var bytes = new Uint8Array(buffer.length);
-        for (var offset = 0; offset < buffer.length; offset++)
+        let bytes = new Uint8Array(buffer.length);
+        for (let offset = 0; offset < buffer.length; offset++)
         {
             bytes[offset] = buffer.readUInt8(offset);
         }
@@ -44,37 +44,37 @@ export class Protobuf
         return bytes;
     };
 
-    encodeStr(key, msg, code)
+    encodeStr(key: string, msg: object, code: string)
     {
         code = code || 'base64';
-        var buffer = this.encode(key, msg);
+        let buffer = this.encode(key, msg);
         return !!buffer ? buffer.toString(code) : buffer;
     };
 
-    decode(key, msg)
+    decode(key: string, msg: Buffer)
     {
         return this.decoder.decode(key, msg);
     };
 
-    decodeStr(key, str, code)
+    decodeStr(key: string, str: string, code: string)
     {
         code = code || 'base64';
-        var buffer = new Buffer(str, code);
+        let buffer = new Buffer(str, code);
 
         return !!buffer ? this.decode(key, buffer) : buffer;
     };
 
-    static parse(json)
+    static parse(json: object)
     {
         return parser.parse(json);
     };
 
-    setEncoderProtos(protos)
+    setEncoderProtos(protos: object)
     {
         this.encoder.init(protos);
     };
 
-    setDecoderProtos(protos)
+    setDecoderProtos(protos: object)
     {
         this.decoder.init(protos);
     };

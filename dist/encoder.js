@@ -17,17 +17,17 @@ class Encoder {
             return null;
         }
         //Get protos from protos map use the route as key
-        var protos = this.protos[route];
+        let protos = this.protos[route];
         //Check msg
         if (!this.checkMsg(msg, protos)) {
             console.warn('check msg failed! msg : %j, proto : %j', msg, protos);
             return null;
         }
         //Set the length of the buffer 2 times bigger to prevent overflow
-        var length = Buffer.byteLength(JSON.stringify(msg)) * 2;
+        let length = Buffer.byteLength(JSON.stringify(msg)) * 2;
         //Init buffer and offset
-        var buffer = new Buffer(length);
-        var offset = 0;
+        let buffer = new Buffer(length);
+        let offset = 0;
         if (!!protos) {
             offset = this.encodeMsg(buffer, offset, protos, msg);
             if (offset > 0) {
@@ -45,8 +45,8 @@ class Encoder {
             console.warn('no protos or msg exist! msg : %j, protos : %j', msg, protos);
             return false;
         }
-        for (var name in protos) {
-            var proto = protos[name];
+        for (let name in protos) {
+            let proto = protos[name];
             //All required element must exist
             switch (proto.option) {
                 case 'required':
@@ -56,7 +56,7 @@ class Encoder {
                     }
                 case 'optional':
                     if (typeof (msg[name]) !== 'undefined') {
-                        var message = protos.__messages[proto.type] || this.protos['message ' + proto.type];
+                        let message = protos.__messages[proto.type] || this.protos['message ' + proto.type];
                         if (!!message && !this.checkMsg(msg[name], message)) {
                             console.warn('inner proto error! name: %j, proto: %j, msg: %j', name, proto, msg);
                             return false;
@@ -65,9 +65,9 @@ class Encoder {
                     break;
                 case 'repeated':
                     //Check nest message in repeated elements
-                    var message = protos.__messages[proto.type] || this.protos['message ' + proto.type];
+                    let message = protos.__messages[proto.type] || this.protos['message ' + proto.type];
                     if (!!msg[name] && !!message) {
-                        for (var i = 0; i < msg[name].length; i++) {
+                        for (let i = 0; i < msg[name].length; i++) {
                             if (!this.checkMsg(msg[name][i], message)) {
                                 return false;
                             }
@@ -79,9 +79,9 @@ class Encoder {
         return true;
     }
     encodeMsg(buffer, offset, protos, msg) {
-        for (var name in msg) {
+        for (let name in msg) {
             if (!!protos[name]) {
-                var proto = protos[name];
+                let proto = protos[name];
                 switch (proto.option) {
                     case 'required':
                     case 'optional':
@@ -99,7 +99,7 @@ class Encoder {
         return offset;
     }
     encodeProp(value, type, offset, buffer, protos) {
-        var length = 0;
+        let length = 0;
         switch (type) {
             case 'uInt32':
                 offset = this.writeBytes(buffer, offset, codec.encodeUInt32(value));
@@ -125,10 +125,10 @@ class Encoder {
                 offset += length;
                 break;
             default:
-                var message = protos.__messages[type] || this.protos['message ' + type];
+                let message = protos.__messages[type] || this.protos['message ' + type];
                 if (!!message) {
                     //Use a tmp buffer to build an internal msg
-                    var tmpBuffer = new Buffer(Buffer.byteLength(JSON.stringify(value)) * 2);
+                    let tmpBuffer = new Buffer(Buffer.byteLength(JSON.stringify(value)) * 2);
                     length = 0;
                     length = this.encodeMsg(tmpBuffer, length, message, value);
                     //Encode length
@@ -145,7 +145,7 @@ class Encoder {
      * Encode reapeated properties, simple msg and object are decode differented
      */
     encodeArray(array, proto, offset, buffer, protos) {
-        var i = 0;
+        let i = 0;
         if (util.isSimpleType(proto.type)) {
             offset = this.writeBytes(buffer, offset, this.encodeTag(proto.type, proto.tag));
             offset = this.writeBytes(buffer, offset, codec.encodeUInt32(array.length));
@@ -162,14 +162,14 @@ class Encoder {
         return offset;
     }
     writeBytes(buffer, offset, bytes) {
-        for (var i = 0; i < bytes.length; i++) {
+        for (let i = 0; i < bytes.length; i++) {
             buffer.writeUInt8(bytes[i], offset);
             offset++;
         }
         return offset;
     }
     encodeTag(type, tag) {
-        var value = constant.TYPES[type];
+        let value = constant.TYPES[type];
         if (value === undefined)
             value = 2;
         return codec.encodeUInt32((tag << 3) | value);

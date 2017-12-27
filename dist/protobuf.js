@@ -22,13 +22,13 @@ class Protobuf {
     }
     ;
     encode2Bytes(key, msg) {
-        var buffer = this.encode(key, msg);
+        let buffer = this.encode(key, msg);
         if (!buffer || !buffer.length) {
             console.warn('encode msg failed! key : %j, msg : %j', key, msg);
             return null;
         }
-        var bytes = new Uint8Array(buffer.length);
-        for (var offset = 0; offset < buffer.length; offset++) {
+        let bytes = new Uint8Array(buffer.length);
+        for (let offset = 0; offset < buffer.length; offset++) {
             bytes[offset] = buffer.readUInt8(offset);
         }
         return bytes;
@@ -36,7 +36,7 @@ class Protobuf {
     ;
     encodeStr(key, msg, code) {
         code = code || 'base64';
-        var buffer = this.encode(key, msg);
+        let buffer = this.encode(key, msg);
         return !!buffer ? buffer.toString(code) : buffer;
     }
     ;
@@ -46,7 +46,7 @@ class Protobuf {
     ;
     decodeStr(key, str, code) {
         code = code || 'base64';
-        var buffer = new Buffer(str, code);
+        let buffer = new Buffer(str, code);
         return !!buffer ? this.decode(key, buffer) : buffer;
     }
     ;

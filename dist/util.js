@@ -12,9 +12,9 @@ function isSimpleType(type) {
 exports.isSimpleType = isSimpleType;
 ;
 function equal(obj0, obj1) {
-    for (var key in obj0) {
-        var m = obj0[key];
-        var n = obj1[key];
+    for (let key in obj0) {
+        let m = obj0[key];
+        let n = obj1[key];
         if (typeof (m) === 'object') {
             if (!equal(m, n)) {
                 return false;

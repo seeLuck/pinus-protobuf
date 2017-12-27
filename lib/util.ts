@@ -1,5 +1,5 @@
 
-export function isSimpleType(type)
+export function isSimpleType(type: string)
 {
 	return (type === 'uInt32' ||
 		type === 'sInt32' ||
@@ -10,12 +10,12 @@ export function isSimpleType(type)
 		type === 'double');
 };
 
-export function equal(obj0, obj1)
+export function equal(obj0: { [key: string]: any }, obj1: { [key: string]: any })
 {
-	for (var key in obj0)
+	for (let key in obj0)
 	{
-		var m = obj0[key];
-		var n = obj1[key];
+		let m = obj0[key];
+		let n = obj1[key];
 
 		if (typeof (m) === 'object')
 		{
